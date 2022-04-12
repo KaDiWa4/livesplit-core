@@ -84,6 +84,7 @@ pub struct Class {
     own_fns: Vec<Function>,
 }
 
+#[allow(clippy::match_like_matches_macro)]
 fn get_type(ty: &SynType) -> Type {
     match ty {
         SynType::Reference(reference) => {
@@ -121,6 +122,8 @@ fn get_type(ty: &SynType) -> Type {
                 name.clear();
                 name += "u8";
             }
+
+            // matches! would use a separate line for every string literal.
             let is_custom = match &name as &str {
                 "u8" | "u16" | "u32" | "u64" | "i8" | "i16" | "i32" | "i64" | "()" | "bool"
                 | "c_char" | "usize" | "isize" | "f32" | "f64" | "Json" => false,
@@ -137,7 +140,7 @@ fn get_type(ty: &SynType) -> Type {
     }
 }
 
-fn get_comment(attrs: &Vec<syn::Attribute>) -> Vec<String> {
+fn get_comment(attrs: &[syn::Attribute]) -> Vec<String> {
     attrs
         .iter()
         .filter_map(|a| match a.parse_meta() {
@@ -204,7 +207,7 @@ fn main() {
                 continue;
             }
 
-            let comments = get_comment(&attrs);
+            let comments = get_comment(attrs);
 
             let output = if let ReturnType::Type(_, ty) = output {
                 get_type(ty)

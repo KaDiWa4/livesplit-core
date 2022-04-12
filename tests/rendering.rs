@@ -261,7 +261,7 @@ fn check_dims(
 
     let path = format!(
         "target/renders/{name}_{}.png",
-        calculated_hash_data.replace("/", "-"),
+        calculated_hash_data.replace('/', "-"),
     );
     image.save(&path).ok();
 
@@ -270,7 +270,7 @@ fn check_dims(
 
         let expected_path = format!(
             "target/renders/{name}_{}.png",
-            expected_hash_data.replace("/", "-"),
+            expected_hash_data.replace('/', "-"),
         );
         let diff_path = if let Ok(expected_image) = image::open(&expected_path) {
             let mut expected_image = expected_image.to_rgba8();

@@ -84,7 +84,6 @@ fn populate_predictions(
 /// it. This means that the predictions buffer needs to have one more element
 /// than the list of segments provided, so that you can properly query the total
 /// Sum of Worst Segments. This value is also the value that is being returned.
-#[allow(clippy::needless_range_loop)]
 pub fn calculate(
     segments: &[Segment],
     predictions: &mut [Option<Prediction>],

@@ -86,7 +86,7 @@ fn write_fn<W: Write>(mut writer: W, function: &Function, type_script: bool) -> 
         .inputs
         .iter()
         .any(|(_, ty)| match (ty.kind, ty.is_custom, &ty.name) {
-            (TypeKind::Value, false, n) if n == "i64" || n == "u64" => true,
+            (TypeKind::Value, false, n) => n == "i64" || n == "u64",
             _ => false,
         })
     {

@@ -898,7 +898,7 @@ impl Editor {
         }
 
         comparison::goal::generate_for_timing_method(
-            &mut self.run.segments_mut(),
+            self.run.segments_mut(),
             self.selected_method,
             time,
             comparison::goal::NAME,

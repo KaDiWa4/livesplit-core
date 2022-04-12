@@ -234,6 +234,8 @@ pub fn update_state(
     state.visual_color = semantic_color.visualize(layout_settings);
 }
 
+type ColumnDisplayData = (Option<TimeSpan>, SemanticColor, ColumnFormatter);
+
 fn column_update_value(
     column: &ColumnSettings,
     timer: &Snapshot<'_>,
@@ -242,7 +244,7 @@ fn column_update_value(
     current_split: Option<usize>,
     method: TimingMethod,
     comparison: &str,
-) -> Option<((Option<TimeSpan>, SemanticColor, ColumnFormatter), bool)> {
+) -> Option<(ColumnDisplayData, bool)> {
     use self::{ColumnUpdateTrigger::*, ColumnUpdateWith::*};
 
     if current_split < Some(segment_index) {

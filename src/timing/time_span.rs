@@ -87,6 +87,7 @@ pub enum ParseError {
 impl FromStr for TimeSpan {
     type Err = ParseError;
 
+    #[allow(clippy::single_char_pattern)]
     fn from_str(mut text: &str) -> Result<Self, ParseError> {
         // It's faster to use `strip_prefix` with char literals if it's an ASCII
         // char, otherwise prefer using string literals.

@@ -7,12 +7,7 @@
     missing_docs,
     rust_2018_idioms
 )]
-// Clippy false positives
-#![allow(
-    clippy::blocks_in_if_conditions,
-    clippy::redundant_closure_call,
-    clippy::new_ret_no_self
-)]
+#![allow(clippy::ptr_arg, clippy::new_ret_no_self)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
 //! livesplit-core is a library that provides a lot of functionality for creating a speedrun timer.

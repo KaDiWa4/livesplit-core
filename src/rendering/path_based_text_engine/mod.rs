@@ -3,7 +3,7 @@
 //! underlying renderer doesn't by itself need to be able to render text, as all
 //! the text gets turned into paths.
 
-use std::{fs, sync::Arc};
+use std::sync::Arc;
 
 #[cfg(feature = "font-loading")]
 use font_kit::{
@@ -44,6 +44,7 @@ impl Default for TextEngine {
 
 impl TextEngine {
     /// Creates a new path based text engine.
+    #[allow(clippy::missing_const_for_fn)]
     pub fn new() -> Self {
         Self {
             #[cfg(feature = "font-loading")]
@@ -61,6 +62,9 @@ impl TextEngine {
                 return font;
             }
         }
+        #[cfg(not(feature = "font-loading"))]
+        let _ = font;
+
         let (font_data, style, weight, stretch) = match kind {
             FontKind::Timer => (
                 TIMER_FONT,
@@ -286,7 +290,7 @@ impl<P> Font<P> {
             .ok()?;
 
         let (buf, font_index) = match handle {
-            Handle::Path { path, font_index } => (fs::read(path).ok()?, font_index),
+            Handle::Path { path, font_index } => (std::fs::read(path).ok()?, font_index),
             Handle::Memory { bytes, font_index } => (
                 Arc::try_unwrap(bytes).unwrap_or_else(|bytes| (*bytes).clone()),
                 font_index,

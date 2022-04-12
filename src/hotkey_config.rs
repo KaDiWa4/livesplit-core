@@ -1,5 +1,3 @@
-#![allow(clippy::trivially_copy_pass_by_ref)]
-
 use crate::{
     hotkey::KeyCode,
     platform::prelude::*,

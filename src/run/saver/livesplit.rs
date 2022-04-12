@@ -29,7 +29,6 @@ use crate::{
     timing::formatter::{Complete, TimeFormatter},
     DateTime, Run, Time, TimeSpan, Timer, TimerPhase,
 };
-use alloc::borrow::Cow;
 use byteorder::{WriteBytesExt, LE};
 use core::{fmt::Display, mem, result::Result as StdResult};
 use quick_xml::{
@@ -155,12 +154,11 @@ fn image<W: Write>(
     tag: BytesStart<'_>,
     image: &Image,
     buf: &mut Vec<u8>,
-    image_buf: &mut Cow<'_, [u8]>,
+    image_buf: &mut Vec<u8>,
 ) -> Result<()> {
     let image_data = image.data();
     if !image_data.is_empty() {
         let len = image_data.len();
-        let image_buf = image_buf.to_mut();
         image_buf.truncate(LSS_IMAGE_HEADER.len());
         image_buf.reserve(len + 6);
         image_buf.write_u32::<LE>(len as u32).unwrap();
@@ -261,7 +259,7 @@ pub fn save_run<W: Write>(run: &Run, writer: W) -> Result<()> {
     let writer = &mut Writer::new(writer);
 
     let buf = &mut Vec::new();
-    let image_buf = &mut Cow::Borrowed(&LSS_IMAGE_HEADER[..]);
+    let image_buf = &mut LSS_IMAGE_HEADER.to_vec();
 
     writer.write_event(Event::Decl(BytesDecl::new(b"1.0", Some(b"UTF-8"), None)))?;
     writer.write_event(Event::Start(BytesStart::borrowed(
